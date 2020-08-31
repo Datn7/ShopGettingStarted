@@ -1,0 +1,47 @@
+<div class="card">
+    <div class="card-header">
+        {{pageTitle}}
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-2">გაფილტვრა:</div>
+            <div class="col-md-4">
+                <input type="text" [(ngModel)]="listFilter">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h5>გაფილტრულია:  {{listFilter}} </h5>
+            </div>
+        </div>
+        <hr>
+        <table class="table table-dark" *ngIf="products && products.length">
+            <thead>
+              <tr>
+                <th>
+                    <button class="btn btn-primary" (click)="toggleImage()">
+                       სურათის {{ showImage ? 'დამალვა' : 'ჩვენება'}}
+                    </button>
+                </th>
+                <th scope="col">პროდუქტი</th>
+                <th scope="col">კოდი</th>
+                <th scope="col">ხელმისაწვდომია</th>
+                <th scope="col">ფასი</th>
+                <th scope="col">რეიტინგი</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of filteredProducts">
+                    <td>
+                        <img *ngIf="showImage" src={{product.imageUrl}} [style.width.px]='imageWidth' [style.margin.px]='imageMargin'>
+                    </td>
+                    <td><a [routerLink]="['/products', product.productId]"  >{{product.productName}}</a></td>
+                    <td>{{product.productCode | lowercase | convertToSpaces:'-'}}</td>
+                    <td>{{product.releaseDate}}</td>
+                    <td>{{product.price | currency: 'USD':'symbol':'1.2-2'}}</td>
+                    <td><pm-star [rating]='product.starRating' (ratingClicked)="onRatingClicked($event)"></pm-star></td>
+                </tr>
+            </tbody>
+          </table>
+    </div>
+  </div>
